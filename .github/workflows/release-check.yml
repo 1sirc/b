@@ -1,0 +1,48 @@
+name: Read-only deployed receiver check
+on:
+  workflow_dispatch:
+    inputs:
+      build_run_id:
+        description: Successful default-branch Verify workflow run ID for the approved deployed artifact
+        required: true
+        type: string
+permissions:
+  contents: read
+  actions: read
+defaults:
+  run:
+    working-directory: hitv-ogads-receiver
+jobs:
+  release-check:
+    if: github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    environment: release-verification
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Reject untrusted or failed build runs
+        env:
+          GH_TOKEN: ${{ github.token }}
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+          BUILD_RUN_ID: ${{ inputs.build_run_id }}
+        run: python3 tools/check_ci_run.py
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: hitv-receiver-verified
+          path: hitv-ogads-receiver/expected
+          run-id: ${{ inputs.build_run_id }}
+          github-token: ${{ github.token }}
+          digest-mismatch: error
+      - name: Validate the expected archive
+        run: python3 tools/release.py verify --directory expected
+      - name: Verify HTTPS health, disabled state and expected build marker
+        run: python3 tools/health_check.py --receipt expected/release.json --output health-result.json
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: always()
+        with:
+          name: receiver-public-health-result
+          path: hitv-ogads-receiver/health-result.json
+          if-no-files-found: warn
+          retention-days: 14

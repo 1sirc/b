@@ -1,0 +1,16 @@
+# Scope: /home/onekfuxn/upxp.store/hitv-ogads/ only. Do not copy into the parent site.
+Options -Indexes -MultiViews
+DirectoryIndex disabled
+ErrorDocument 403 "Forbidden"
+ErrorDocument 404 "Not found"
+<FilesMatch "^(?:\.|README\.md$|package-manifest\.json$)">
+    Require all denied
+</FilesMatch>
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    # Optional exact REST alias. Direct postback.php works without this module.
+    RewriteRule ^api/v1/offers/ogads/postback$ postback.php [END]
+    RewriteRule ^(?:postback\.php|health\.php)$ - [END]
+    # No generic front controller, static downloads or inherited-site fallback.
+    RewriteRule ^ - [R=404,END]
+</IfModule>

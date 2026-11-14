@@ -1,0 +1,12 @@
+/dist*/
+/evidence/
+/verified-*/
+__pycache__/
+*.pyc
+.env
+.env.*
+*.key
+*.pem
+*.sql
+*.sqlite*
+*.log
