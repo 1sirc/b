@@ -1,0 +1,23 @@
+{
+  "baselineZipSha256": "6c01f0f926cc91fd803eaf4fdc3e07736e1e4c999c756fd8d27d4497bb04c28c",
+  "baselineVersion": "2026-11-14.2",
+  "existingClassProvenance": {
+    "OfferError": {
+      "source": "src/OfferProvider.php",
+      "classSha256": "2d377eebd62f3bff5e09dea8bb3e85337ebab76a4ee9b6e69c66a9cc4b227c8f"
+    },
+    "OgAdsCallbackContract": {
+      "source": "src/OgAdsPostbacks.php",
+      "classSha256": "12509da81f52e32290cfa81e2a955ba529d96c967f5e1c602b1a9b7a378bc70b"
+    },
+    "OgAdsPeerVerifier": {
+      "source": "src/OgAdsPostbacks.php",
+      "classSha256": "fd05b465798e693a451a88f1f8390385c4d2f30d655c111f6a36cbc46aa8f776"
+    },
+    "OgAdsPostbackEndpoint": {
+      "source": "src/OgAdsPostbacks.php",
+      "classSha256": "efa6d15299c23eec465f3588e4e1a8d1c26a2f3c09e099fa075e61a13aadb014"
+    }
+  },
+  "receiverFileSha256": "b8e946084767b37f2438ea0ad468bdefd045b9b4df8cd255c7c5b6e3aa84b288"
+}
